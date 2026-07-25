@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="id"><head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 <meta charset="UTF-8">
@@ -562,7 +561,7 @@ otomatis dari Purpose Unit + Type Asuransi + Tenor yang dipilih.</p>
         <p class="other-tenor-hint">Simulasi otomatis angsuran untuk pilihan tenor lain, menggunakan DP Gross, harga, dan skema yang sama seperti input saat ini.</p>
         <table class="other-tenor">
           <thead><tr><th>Tenor</th><th>DP Gross</th><th>Angsuran</th></tr></thead>
-          <tbody id="tenorLainBody"></tbody>
+          <tbody id="tenorLainBody"><tr class=""><td>12 bln</td><td class="num">Rp 36.600.000</td><td class="num">Rp 18.651.000</td></tr><tr class=""><td>24 bln</td><td class="num">Rp 36.600.000</td><td class="num">Rp 10.130.000</td></tr><tr class="active-row"><td>36 bln <span class="badge-now">saat ini</span></td><td class="num">Rp 36.600.000</td><td class="num">Rp 7.377.000</td></tr><tr class=""><td>48 bln</td><td class="num">Rp 36.600.000</td><td class="num">Rp 5.991.000</td></tr><tr class=""><td>60 bln</td><td class="num">Rp 36.600.000</td><td class="num">Rp 5.176.000</td></tr></tbody>
         </table>
         <div class="copy-row">
           <button class="btn-copy" id="btnCopyTenor" type="button">
@@ -990,5 +989,6 @@ render();
   renderTenorLain(); // isi awal saat halaman dibuka
 })();
 </script>
+
 
 </body></html>
