@@ -1,9 +1,679 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Testing Indra</title>
+<html lang="id"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MANDIRI UTAMA FINANCE INDRA MUHAMMAD</title>
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link href="Simulasi%20Kredit%20Kendaraan_files/css2_o1i3.css" rel="stylesheet">
+<style>
+  :root{
+    --navy-900:#0B1F3A;
+    --navy-800:#132A4D;
+    --navy-700:#1C3A66;
+    --bg:#F4F6FA;
+    --card:#FFFFFF;
+    --line:#E3E8F0;
+    --gold:#C8963E;
+    --gold-soft:#F3E4C4;
+    --text:#16233B;
+    --muted:#66748E;
+    --green:#1E7B4D;
+    --red:#B23A2E;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(1200px 500px at 100% -10%, #17335C 0%, transparent 60%),
+      var(--bg);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .num{font-variant-numeric:tabular-nums;}
+  h1,h2,h3,.display{font-family:'Space Grotesk',sans-serif;}
+
+  /* ---------- Header ---------- */
+  .topbar{
+    background:linear-gradient(120deg,var(--navy-900) 0%,var(--navy-700) 100%);
+    color:#fff;
+    padding:22px 28px;
+  }
+  .topbar-inner{
+    max-width:1240px;margin:0 auto;
+    display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  }
+  .brand{display:flex;align-items:center;gap:14px;}
+  .brand-mark{
+    width:44px;height:44px;border-radius:10px;
+    background:linear-gradient(135deg,var(--gold) 0%, #8f6a24 100%);
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  }
+  .brand-mark svg{width:24px;height:24px;}
+  .brand input{
+    background:transparent;border:none;color:#fff;font-family:'Space Grotesk',sans-serif;
+    font-size:19px;font-weight:600;padding:2px 4px;border-radius:6px;max-width:340px;
+  }
+  .brand input:focus{outline:1px dashed rgba(255,255,255,.5);}
+  .brand small{display:block;color:#B9C6DE;font-size:12px;margin-top:1px;font-weight:400;}
+  .scheme-toggle{
+    display:flex;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);
+    border-radius:999px;padding:4px;gap:4px;
+  }
+  .scheme-toggle button{
+    border:none;background:transparent;color:#CBD6E8;padding:9px 18px;border-radius:999px;
+    font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:13.5px;cursor:pointer;
+    letter-spacing:.3px;
+  }
+  .scheme-toggle button.active{background:var(--gold);color:#211605;}
+
+  /* ---------- Layout ---------- */
+  .wrap{max-width:1240px;margin:0 auto;padding:28px 20px 60px;}
+  .grid{display:grid;grid-template-columns:400px 1fr;gap:22px;align-items:start;}
+  @media(max-width:960px){.grid{grid-template-columns:1fr;}}
+
+  .card{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:22px 22px 24px;
+  }
+  .card + .card{margin-top:18px;}
+  .card-title{
+    font-size:12.5px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);
+    font-weight:700;margin:0 0 16px;display:flex;align-items:center;gap:8px;
+  }
+  .card-title .dot{width:6px;height:6px;border-radius:50%;background:var(--gold);}
+
+  /* ---------- Form ---------- */
+  .field{margin-bottom:16px;}
+  .field label{
+    display:flex;justify-content:space-between;align-items:baseline;
+    font-size:12.5px;font-weight:600;color:var(--navy-800);margin-bottom:6px;
+  }
+  .field label .tag{
+    font-size:10px;font-weight:700;padding:2px 7px;border-radius:5px;letter-spacing:.03em;
+  }
+  .tag.edit{background:#E6F3EA;color:var(--green);}
+  .tag.lock{background:#F1E9E6;color:#8A5A45;}
+  select,input[type=text],input[type=number]{
+    width:100%;padding:10px 12px;border-radius:9px;border:1.5px solid var(--line);
+    font-family:'Inter',sans-serif;font-size:14.5px;color:var(--text);background:#fff;
+    transition:border-color .15s;
+  }
+  select:focus,input:focus{outline:none;border-color:var(--gold);}
+  select{appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path d='M0 0l5 6 5-6z' fill='%2366748E'/></svg>");background-repeat:no-repeat;background-position:right 12px center;padding-right:30px;cursor:pointer;}
+  .locked{background:#F7F5F2;color:#8A5A45;font-weight:600;border-style:dashed;}
+  .rp-input{position:relative;}
+  .rp-input span{
+    position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:14px;font-weight:600;
+  }
+  .rp-input input{padding-left:34px;}
+  .pct-input{position:relative;}
+  .pct-input input{padding-right:30px;}
+  .pct-input span{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:13px;font-weight:600;}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .hint{font-size:11.5px;color:var(--muted);margin-top:5px;line-height:1.4;}
+  .link-btn{
+    background:none;border:none;color:var(--navy-700);font-size:11.5px;font-weight:700;
+    text-decoration:underline;cursor:pointer;padding:0;margin-top:4px;
+  }
+  details.adv{margin-top:4px;}
+  details.adv summary{cursor:pointer;font-size:12px;font-weight:700;color:var(--navy-700);padding:8px 0;list-style:none;}
+  details.adv summary::-webkit-details-marker{display:none;}
+  details.adv summary::before{content:"▸ ";color:var(--gold);}
+  details.adv[open] summary::before{content:"▾ ";}
+
+  /* ---------- Result hero ---------- */
+  .hero-card{
+    background:linear-gradient(135deg,var(--navy-900) 0%, #1B3B69 100%);
+    color:#fff;border-radius:var(--radius);padding:26px 26px 22px;position:relative;overflow:hidden;
+  }
+  .hero-card::after{
+    content:"";position:absolute;right:-60px;top:-60px;width:220px;height:220px;border-radius:50%;
+    background:radial-gradient(circle, rgba(200,150,62,.28), transparent 70%);
+  }
+  .hero-top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;position:relative;z-index:1;}
+  .hero-label{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#AFC0DC;font-weight:700;margin:0 0 6px;}
+  .hero-value{font-size:40px;font-weight:700;line-height:1.1;}
+  .hero-value small{font-size:16px;font-weight:600;color:#C9D5E9;}
+  .hero-sub{display:flex;gap:22px;margin-top:16px;flex-wrap:wrap;position:relative;z-index:1;}
+  .hero-sub div p{margin:0;font-size:11px;color:#9FB1D0;text-transform:uppercase;letter-spacing:.06em;font-weight:700;}
+  .hero-sub div span{font-size:16px;font-weight:700;}
+
+  .gauge-wrap{width:150px;text-align:center;position:relative;z-index:1;}
+  .gauge-wrap .g-val{font-family:'Space Grotesk';font-size:22px;font-weight:700;margin-top:-46px;}
+  .gauge-wrap .g-label{font-size:10.5px;color:#AFC0DC;text-transform:uppercase;letter-spacing:.06em;font-weight:700;}
+
+  /* ---------- Stat grid ---------- */
+  .stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px;}
+  @media(max-width:720px){.stat-grid{grid-template-columns:repeat(2,1fr);}}
+  .stat{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:15px 16px;
+  }
+  .stat p{margin:0 0 6px;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:700;}
+  .stat span{font-size:18px;font-weight:700;color:var(--navy-900);font-family:'Space Grotesk';}
+  .stat.accent{border-color:var(--gold-soft);background:#FFFBF3;}
+  .stat.accent span{color:#8A5A16;}
+
+  /* ---------- Breakdown table ---------- */
+  table.breakdown{width:100%;border-collapse:collapse;font-size:13.5px;}
+  table.breakdown tr{border-bottom:1px solid var(--line);}
+  table.breakdown tr:last-child{border-bottom:none;}
+  table.breakdown td{padding:10px 4px;}
+  table.breakdown td:first-child{color:var(--muted);font-weight:500;}
+  table.breakdown td:last-child{text-align:right;font-weight:700;color:var(--navy-900);}
+  table.breakdown tr.total td{border-top:2px solid var(--navy-800);padding-top:13px;}
+  table.breakdown tr.total td:first-child{color:var(--navy-900);font-weight:700;}
+  table.breakdown tr.total td:last-child{color:var(--gold);font-size:16px;}
+
+  .foot-note{margin-top:20px;font-size:11.5px;color:var(--muted);line-height:1.6;text-align:center;}
+  .foot-note b{color:var(--navy-800);}
+
+  @media print{
+    .topbar .scheme-toggle, .card.no-print{display:none;}
+  }
+</style>
 </head>
 <body>
-    <h1>Halo, ini website buatan saya!</h1>
-</body>
-</html>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <div class="brand-mark">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M3 13l1.6-5.2A2 2 0 0 1 6.5 6.4h11a2 2 0 0 1 1.9 1.4L21 13v6a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1v-1H6v1a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-6z" stroke="#211605" stroke-width="1.6" stroke-linejoin="round"></path><circle cx="7.5" cy="15.5" r="1.3" fill="#211605"></circle><circle cx="16.5" cy="15.5" r="1.3" fill="#211605"></circle></svg>
+      </div>
+      <div>
+        <input type="text" id="companyName" value="Simulasi Kredit Kendaraan" spellcheck="false">
+        <small>Kalkulator angsuran &amp; skema pembiayaan kendaraan</small>
+      </div>
+    </div>
+    <div class="scheme-toggle" id="schemeToggle">
+      <button data-scheme="ADDB" class="active">ADDB</button>
+      <button data-scheme="ADDM">ADDM</button>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="grid">
+
+    <!-- ===================== INPUT PANEL ===================== -->
+    <div>
+      <div class="card">
+        <p class="card-title"><span class="dot"></span>Data Kendaraan</p>
+
+        <div class="field">
+          <label>Jenis Kendaraan</label>
+          <select id="jenisKendaraan">
+            <option value="Passenger Pribadi" selected="selected">Passenger Pribadi</option>
+            <option value="Passenger Usaha">Passenger Usaha</option>
+            <option value="Pickup Usaha">Pickup Usaha</option>
+            <option value="Pickup Pribadi">Pickup Pribadi</option>
+            <option value="Mobil Listrik">Mobil Listrik</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Harga Kendaraan (OTR)</label>
+          <div class="rp-input"><span>Rp</span><input type="text" inputmode="numeric" id="harga" value="230.000.000"></div>
+        </div>
+
+        <div class="field">
+          <label>Tenor</label>
+          <select id="tenor">
+            <option value="12">12 bulan</option>
+            <option value="24">24 bulan</option>
+            <option value="36" selected="selected">36 bulan</option>
+            <option value="48">48 bulan</option>
+            <option value="60">60 bulan</option>
+            <option value="72">72 bulan</option>
+            <option value="84">84 bulan</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="card">
+        <p class="card-title"><span class="dot"></span>Asuransi</p>
+
+        <div class="row2">
+          <div class="field">
+            <label>Purpose Unit <span class="tag edit">bisa dipilih</span></label>
+            <select id="purposeUnit">
+              <option value="Passenger Pribadi" selected="selected">Passenger Pribadi</option>
+              <option value="Passenger Usaha">Passenger Usaha</option>
+              <option value="Truck/Pickup Usaha">Truck/Pickup Usaha</option>
+              <option value="Truck/Pickup Pribadi">Truck/Pickup Pribadi</option>
+              <option value="BUS PRIBADI">Bus Pribadi</option>
+              <option value="BUS USAHA">Bus Usaha</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Type Asuransi <span class="tag edit">bisa dipilih</span></label>
+            <select id="tipeAsuransi">
+              <option>ALL RISK</option>
+              <option>FULL TLO</option>
+              <option selected="selected">1C+TLO</option>
+              <option>2C+TLO</option>
+              <option>3C+TLO</option>
+              <option>4C+TLO</option>
+              <option>5C+TLO</option>
+              <option>6C+TLO</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row2">
+          <div class="field">
+            <label>% Asuransi (kumulatif) <span class="tag lock">otomatis</span></label>
+            <input type="text" class="locked num" id="pctAsuransi" readonly="readonly" value="2,594%">
+          </div>
+          <div class="field">
+            <label>Total Asuransi <span class="tag lock">otomatis</span></label>
+            <input type="text" class="locked num" id="totalAsuransi" readonly="readonly" value="Rp 5.966.200">
+          </div>
+        </div>
+        <p class="hint">Purpose Unit menentukan kategori tarif premi 
+(default mengikuti Jenis Kendaraan, tapi bisa dipilih manual bila 
+penggunaan unit berbeda). % Asuransi &amp; Total Asuransi terhitung 
+otomatis dari Purpose Unit + Type Asuransi + Tenor yang dipilih.</p>
+      </div>
+
+      <div class="card">
+        <p class="card-title"><span class="dot"></span>DP &amp; LTV</p>
+
+        <div class="field">
+          <label>DP Gross <span class="tag edit">bisa diganti</span></label>
+          <div class="rp-input"><span>Rp</span><input type="text" inputmode="numeric" id="dpGross" value="36.600.000"></div>
+          <button class="link-btn" id="btnSaranDp">Hitung saran DP (target LTV <span id="targetLtvLabel">90%</span>)</button>
+        </div>
+
+        <div class="field">
+          <label>DP Nett <span class="tag lock">otomatis</span></label>
+          <input type="text" class="locked num" id="dpNett" readonly="readonly" value="Rp 29.075.758">
+        </div>
+
+        <div class="field">
+          <label>LTV Acuan <span class="tag edit">bisa diganti</span></label>
+          <div class="pct-input"><input type="text" inputmode="decimal" id="ltvAcuan" value="89,95"><span>%</span></div>
+          <p class="hint">Nilai referensi hasil perhitungan. Bisa ditimpa manual untuk kebutuhan negosiasi/simulasi, tidak memengaruhi hasil lain.</p>
+        </div>
+
+        <details class="adv">
+          <summary>Pengaturan lanjutan</summary>
+          <div class="field">
+            <label>Target LTV untuk saran DP</label>
+            <div class="pct-input"><input type="text" inputmode="decimal" id="targetLtv" value="90"><span>%</span></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="card">
+        <p class="card-title"><span class="dot"></span>Rate &amp; Biaya</p>
+        <div class="row2">
+          <div class="field">
+            <label>Eff Rate <span class="tag edit">bisa diganti</span></label>
+            <div class="pct-input"><input type="text" inputmode="decimal" id="effRate" value="17"><span>%</span></div>
+          </div>
+          <div class="field">
+            <label>% Provisi <span class="tag edit">bisa diganti</span></label>
+            <div class="pct-input"><input type="text" inputmode="decimal" id="pctProvisi" value="1"><span>%</span></div>
+          </div>
+        </div>
+        <div class="field">
+          <label>Admin (Tunai) <span class="tag edit">bisa diganti</span></label>
+          <div class="rp-input"><span>Rp</span><input type="text" inputmode="numeric" id="admin" value="5.000.000"></div>
+        </div>
+        <details class="adv">
+          <summary>Pengaturan lanjutan</summary>
+          <div class="field">
+            <label>TAC Reguler (%)</label>
+            <div class="pct-input"><input type="text" inputmode="decimal" id="tacPct" value="15"><span>%</span></div>
+          </div>
+        </details>
+      </div>
+    </div>
+
+    <!-- ===================== RESULT PANEL ===================== -->
+    <div>
+      <div class="hero-card">
+        <div class="hero-top">
+          <div>
+            <p class="hero-label">Angsuran per bulan</p>
+            <div class="hero-value num" id="rAngsuran">Rp 7.377.000</div>
+          </div>
+          <div class="gauge-wrap">
+            <svg viewBox="0 0 150 90" width="150" height="90">
+              <path d="M15 82 A60 60 0 0 1 135 82" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="10" stroke-linecap="round"></path>
+              <path id="gaugeArc" d="M15 82 A60 60 0 0 1 135 82" fill="none" stroke="#C8963E" stroke-width="10" stroke-linecap="round" stroke-dasharray="141.67125000000001 189"></path>
+            </svg>
+            <div class="g-val" id="gaugeVal">90,0%</div>
+            <div class="g-label">LTV Acuan</div>
+          </div>
+        </div>
+        <div class="hero-sub">
+          <div><p>Skema</p><span id="rSkema">ADDB</span></div>
+          <div><p>Tenor</p><span id="rTenor">36 bln</span></div>
+          <div><p>Eff Rate</p><span id="rEffRate">17%</span></div>
+          <div><p>Total TAC Reguler</p><span class="num" id="rTac">Rp 10.077.352</span></div>
+        </div>
+      </div>
+
+      <div class="stat-grid">
+        <div class="stat"><p>Pelunasan Dealer</p><span class="num" id="sPelunasan">Rp 193.400.000</span></div>
+        <div class="stat"><p>Total Piutang</p><span class="num" id="sPiutang">Rp 265.572.000</span></div>
+        <div class="stat accent"><p>Amt Bunga</p><span class="num" id="sBunga">Rp 58.681.558</span></div>
+        <div class="stat"><p>PH Murni</p><span class="num" id="sPhMurni">Rp 200.924.242</span></div>
+        <div class="stat"><p>Total PH (LTV)</p><span class="num" id="sTotalPh">Rp 206.890.442</span></div>
+        <div class="stat"><p>Provisi</p><span class="num" id="sProvisi">Rp 2.009.242</span></div>
+      </div>
+
+      <div class="card" style="margin-top:14px;">
+        <p class="card-title"><span class="dot"></span>Rincian Perhitungan</p>
+        <table class="breakdown">
+          <tbody><tr><td>DP Gross</td><td class="num" id="bDpGross">Rp 36.600.000</td></tr>
+          <tr><td>% DP Gross</td><td class="num" id="bPctDpGross">15,9%</td></tr>
+          <tr><td>DP Nett</td><td class="num" id="bDpNett">Rp 29.075.758</td></tr>
+          <tr><td>% DP Nett</td><td class="num" id="bPctDpNett">12,6%</td></tr>
+          <tr><td>Admin</td><td class="num" id="bAdmin">Rp 5.000.000</td></tr>
+          <tr><td>Provisi</td><td class="num" id="bProvisi">Rp 2.009.242</td></tr>
+          <tr><td>Fiducia</td><td class="num" id="bFiducia">Rp 515.000</td></tr>
+          <tr><td>Total Asuransi (kredit)</td><td class="num" id="bAsuransi">Rp 5.966.200</td></tr>
+          <tr><td>Flat Rate</td><td class="num" id="bFlatRate">9,5%</td></tr>
+          <tr><td>Total Piutang</td><td class="num" id="bPiutang">Rp 265.572.000</td></tr>
+          <tr class="total"><td>Total TAC Reguler</td><td class="num" id="bTacTotal">Rp 10.077.352</td></tr>
+        </tbody></table>
+      </div>
+
+      <p class="foot-note">Perhitungan simulasi ini bersifat estimasi 
+dan tidak mengikat, dapat berubah sewaktu-waktu mengikuti kebijakan 
+perusahaan pembiayaan. &nbsp;·&nbsp; <b>Kategori asuransi &amp; suku bunga default</b> mengikuti tabel referensi internal — sesuaikan bila perusahaan Anda memiliki tabel berbeda.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+/* =====================================================================
+   DATA REFERENSI  (diturunkan dari tabel "TABEL ASURANSI" & "BUNGA")
+   ===================================================================== */
+const CATEGORY_MAP = {
+  "Passenger Pribadi": "Passenger Pribadi",
+  "Passenger Usaha": "Passenger Usaha",
+  "Pickup Usaha": "Truck/Pickup Usaha",
+  "Pickup Pribadi": "Truck/Pickup Pribadi",
+  "Mobil Listrik": "Passenger Pribadi" // asumsi: disamakan dgn Passenger Pribadi
+};
+
+const COMP_TLO_MAP = {
+  "ALL RISK": ["COMP","COMP","COMP","COMP","COMP","COMP","COMP"],
+  "FULL TLO": ["TLO","TLO","TLO","TLO","TLO","TLO","TLO"],
+  "1C+TLO":   ["COMP","TLO","TLO","TLO","TLO","TLO","TLO"],
+  "2C+TLO":   ["COMP","COMP","TLO","TLO","TLO","TLO","TLO"],
+  "3C+TLO":   ["COMP","COMP","COMP","TLO","TLO","TLO","TLO"],
+  "4C+TLO":   ["COMP","COMP","COMP","COMP","TLO","TLO","TLO"],
+  "5C+TLO":   ["COMP","COMP","COMP","COMP","COMP","TLO","TLO"],
+  "6C+TLO":   ["COMP","COMP","COMP","COMP","COMP","COMP","TLO"]
+};
+
+const TSI_BY_YEAR = [1, 0.85, 0.75, 0.70, 0.65, 0.60, 0.55];
+
+const RATE_TABLE = {
+  "Passenger Pribadi":     {COMP1:0.0263,COMP2:0.0279,COMP3:0.0189,COMP4:0.0124,COMP5:0.0115,TLO1:0.0051,TLO2:0.0044,TLO3:0.0029,TLO4:0.0023,TLO5:0.0020},
+  "Passenger Usaha":       {COMP1:0.0283,COMP2:0.0299,COMP3:0.0209,COMP4:0.0144,COMP5:0.0135,TLO1:0.0071,TLO2:0.0064,TLO3:0.0049,TLO4:0.0043,TLO5:0.0040},
+  "Truck/Pickup Usaha":    {COMP1:0.0253,COMP2:0.0253,COMP3:0.0253,COMP4:0.0253,COMP5:0.0253,TLO1:0.0101,TLO2:0.0101,TLO3:0.0101,TLO4:0.0101,TLO5:0.0101},
+  "Truck/Pickup Pribadi":  {COMP1:0.0233,COMP2:0.0233,COMP3:0.0233,COMP4:0.0233,COMP5:0.0233,TLO1:0.0081,TLO2:0.0081,TLO3:0.0081,TLO4:0.0081,TLO5:0.0081},
+  "BUS PRIBADI":           {COMP1:0.0098,COMP2:0.0098,COMP3:0.0098,COMP4:0.0098,COMP5:0.0098,TLO1:0.0018,TLO2:0.0018,TLO3:0.0018,TLO4:0.0018,TLO5:0.0018},
+  "BUS USAHA":             {COMP1:0.0118,COMP2:0.0118,COMP3:0.0118,COMP4:0.0118,COMP5:0.0118,TLO1:0.0038,TLO2:0.0038,TLO3:0.0038,TLO4:0.0038,TLO5:0.0038}
+};
+
+const DEFAULT_EFF_RATE = { 12:16.5, 24:16.5, 36:17, 48:17, 60:17, 72:17, 84:17 };
+
+/* =====================================================================
+   HELPERS
+   ===================================================================== */
+function tierAsuransi(nilai){
+  if(nilai<=125000000) return 1;
+  if(nilai<=200000000) return 2;
+  if(nilai<=400000000) return 3;
+  if(nilai<=800000000) return 4;
+  return 5;
+}
+function fiduciaFee(totalPiutang){
+  if(totalPiutang<=50000000) return 115000;
+  if(totalPiutang<=100000000) return 165000;
+  if(totalPiutang<=250000000) return 265000;
+  if(totalPiutang<=500000000) return 515000;
+  if(totalPiutang<=1000000000) return 915000;
+  return 1865000;
+}
+function PMT(rate, nper, pv, fv, type){
+  if(rate===0) return -(pv+fv)/nper;
+  const pow = Math.pow(1+rate, nper);
+  return -(fv + pv*pow) * rate / ((1+rate*type)*(pow-1));
+}
+function roundUpTo(value, nearest){ return Math.ceil(value/nearest)*nearest; }
+
+function fmtRp(n){
+  if(!isFinite(n)) n=0;
+  return "Rp " + Math.round(n).toLocaleString("id-ID");
+}
+function fmtPct(n, d=1){ return (n*100).toFixed(d).replace(".", ",") + "%"; }
+function parseNum(str){
+  if(typeof str !== "string") return Number(str)||0;
+  return Number(str.replace(/[^\d.-]/g,"").replace(/\.(?=.*\.)/g,"")) || Number(str.replace(/\./g,""))||0;
+}
+function parseRupiah(str){
+  const cleaned = String(str).replace(/[^\d]/g,"");
+  return cleaned ? parseInt(cleaned,10) : 0;
+}
+function formatRupiahInput(el){
+  const digits = el.value.replace(/[^\d]/g,"");
+  el.value = digits ? Number(digits).toLocaleString("id-ID") : "";
+}
+
+/* =====================================================================
+   CORE ENGINE  — mengikuti struktur kolom "MESIN HITUNG"
+   ===================================================================== */
+
+// R = % asuransi kumulatif sepanjang tenor
+function hitungPersenAsuransi(category, tipeAsuransi, harga, tenorBulan){
+  const numYears = tenorBulan/12;
+  const status = COMP_TLO_MAP[tipeAsuransi];
+  let total = 0;
+  for(let y=1; y<=numYears; y++){
+    const tsi = TSI_BY_YEAR[y-1];
+    const st = status[y-1];
+    const nilaiTertanggung = harga * tsi;
+    const tier = tierAsuransi(nilaiTertanggung);
+    const rateKey = st + tier;
+    const baseRate = RATE_TABLE[category][rateKey];
+    total += baseRate * tsi;
+  }
+  return total;
+}
+
+// Solve sistem sirkular (T,V,W,X,Y,P,AA) untuk DP Gross (F) tertentu
+function solveForDp(B, F, K, L, effRatePct, provisiPct, E, addm, M){
+  const O = M; // asuransi kredit (asumsi asuransi tunai = 0)
+  const I = effRatePct/100;
+  const J = provisiPct/100;
+  let P=0, W=0, X=265000, Y=0, V=0, T=0, AA=0;
+  for(let i=0;i<80;i++){
+    T = F - (K+L+W+X+(addm?P:0));
+    V = B - T;
+    W = V*J;
+    Y = V + L + O;
+    const rate = I/12;
+    const pmtRaw = PMT(rate, E, -Y, 0, addm?1:0);
+    P = roundUpTo(Math.max(pmtRaw,0), 1000);
+    AA = E*P;
+    X = fiduciaFee(AA);
+  }
+  return {T,V,W,X,Y,P,AA,O};
+}
+
+function hitungSemua(){
+  const category = document.getElementById("purposeUnit").value;
+  const B = parseRupiah(document.getElementById("harga").value);
+  const tipeAsuransi = document.getElementById("tipeAsuransi").value;
+  const E = parseInt(document.getElementById("tenor").value,10);
+  const F = parseRupiah(document.getElementById("dpGross").value);
+  const K = parseRupiah(document.getElementById("admin").value);
+  const L = 0; // admin kredit (tidak ditampilkan)
+  const effRatePct = parseFloat((document.getElementById("effRate").value||"0").replace(",","."));
+  const provisiPct = parseFloat((document.getElementById("pctProvisi").value||"0").replace(",","."));
+  const tacPct = parseFloat((document.getElementById("tacPct").value||"0").replace(",","."))/100;
+  const addm = currentScheme === "ADDM";
+
+  const R = hitungPersenAsuransi(category, tipeAsuransi, B, E);
+  const M = R * B; // total asuransi
+
+  const sol = solveForDp(B, F, K, L, effRatePct, provisiPct, E, addm, M);
+  const {T,V,W,X,Y,P,AA,O} = sol;
+
+  const S = B? F/B : 0;          // % DP Gross
+  const U = B? T/B : 0;          // % DP Nett
+  const ltvAcuanCalc = B? Y/B : 0;
+  const Z = Y? (((P*E)-Y)/Y)*(1/(E/12)) : 0; // flat rate
+  const AB = ltvAcuanCalc < 0.9 ? (AA-Y) : (Z*V*(E/12)); // amt bunga
+  const AC = tacPct*AB;
+  const AD = (tacPct*0.25)*M;
+  const AE = tacPct*(K+L);
+  const AF = tacPct*W;
+  const AG = AC+AD+AE+AF; // total TAC reguler
+  const Q = B-F; // pelunasan dealer
+
+  return {
+    B,F,T,V,W,X,Y,P,AA,O,M,S,U,ltvAcuanCalc,Z,AB,AG,Q,E,addm,K
+  };
+}
+
+/* =====================================================================
+   RENDER
+   ===================================================================== */
+let currentScheme = "ADDB";
+let ltvManualOverride = null;
+
+function render(){
+  const r = hitungSemua();
+
+  document.getElementById("pctAsuransi").value = fmtPct(r.M / r.B, 3);
+  document.getElementById("totalAsuransi").value = fmtRp(r.M);
+
+  document.getElementById("rAngsuran").textContent = fmtRp(r.P);
+  document.getElementById("rSkema").textContent = currentScheme;
+  document.getElementById("rTenor").textContent = r.E + " bln";
+  document.getElementById("rEffRate").textContent = document.getElementById("effRate").value + "%";
+  document.getElementById("rTac").textContent = fmtRp(r.AG);
+
+  document.getElementById("sPelunasan").textContent = fmtRp(r.Q);
+  document.getElementById("sPiutang").textContent = fmtRp(r.P*r.E);
+  document.getElementById("sBunga").textContent = fmtRp(r.AB);
+  document.getElementById("sPhMurni").textContent = fmtRp(r.V);
+  document.getElementById("sTotalPh").textContent = fmtRp(r.Y);
+  document.getElementById("sProvisi").textContent = fmtRp(r.W);
+
+  document.getElementById("bDpGross").textContent = fmtRp(r.F);
+  document.getElementById("bPctDpGross").textContent = fmtPct(r.S);
+  document.getElementById("bDpNett").textContent = fmtRp(r.T);
+  document.getElementById("bPctDpNett").textContent = fmtPct(r.U);
+  document.getElementById("bAdmin").textContent = fmtRp(r.K);
+  document.getElementById("bProvisi").textContent = fmtRp(r.W);
+  document.getElementById("bFiducia").textContent = fmtRp(r.X);
+  document.getElementById("bAsuransi").textContent = fmtRp(r.O);
+  document.getElementById("bFlatRate").textContent = fmtPct(r.Z);
+  document.getElementById("bPiutang").textContent = fmtRp(r.P*r.E);
+  document.getElementById("bTacTotal").textContent = fmtRp(r.AG);
+
+  document.getElementById("dpNett").value = fmtRp(r.T);
+
+  // LTV acuan: auto-fill unless user has manually typed an override
+  const ltvField = document.getElementById("ltvAcuan");
+  const computedLtvPct = (r.ltvAcuanCalc*100);
+  if(ltvManualOverride===null){
+    ltvField.value = computedLtvPct.toFixed(2).replace(".",",");
+  }
+  const gaugePct = Math.min(Math.max(parseFloat((ltvField.value||"0").replace(",","."))||0,0),120);
+  const circumference = 189; // approx arc length of the path
+  const frac = Math.min(gaugePct/120,1);
+  document.getElementById("gaugeArc").setAttribute("stroke-dasharray", (frac*circumference)+" "+circumference);
+  document.getElementById("gaugeVal").textContent = gaugePct.toFixed(1).replace(".",",")+"%";
+}
+
+/* =====================================================================
+   EVENTS
+   ===================================================================== */
+document.getElementById("schemeToggle").addEventListener("click", (e)=>{
+  const btn = e.target.closest("button");
+  if(!btn) return;
+  document.querySelectorAll("#schemeToggle button").forEach(b=>b.classList.remove("active"));
+  btn.classList.add("active");
+  currentScheme = btn.dataset.scheme;
+  render();
+});
+
+["harga","dpGross","admin"].forEach(id=>{
+  const el = document.getElementById(id);
+  el.addEventListener("input", ()=>{ formatRupiahInput(el); render(); });
+});
+
+["purposeUnit","tipeAsuransi","effRate","pctProvisi","tacPct","targetLtv"].forEach(id=>{
+  document.getElementById(id).addEventListener("input", render);
+  document.getElementById(id).addEventListener("change", render);
+});
+
+// Jenis Kendaraan hanya mengatur DEFAULT Purpose Unit — Purpose Unit tetap bisa dipilih manual
+document.getElementById("jenisKendaraan").addEventListener("change", ()=>{
+  const jenis = document.getElementById("jenisKendaraan").value;
+  document.getElementById("purposeUnit").value = CATEGORY_MAP[jenis];
+  render();
+});
+
+document.getElementById("tenor").addEventListener("change", ()=>{
+  const t = parseInt(document.getElementById("tenor").value,10);
+  document.getElementById("effRate").value = String(DEFAULT_EFF_RATE[t]).replace(".",",");
+  render();
+});
+
+document.getElementById("ltvAcuan").addEventListener("input", (e)=>{
+  ltvManualOverride = e.target.value;
+  const gaugePct = Math.min(Math.max(parseFloat((e.target.value||"0").replace(",","."))||0,0),120);
+  const circumference = 189;
+  const frac = Math.min(gaugePct/120,1);
+  document.getElementById("gaugeArc").setAttribute("stroke-dasharray", (frac*circumference)+" "+circumference);
+  document.getElementById("gaugeVal").textContent = gaugePct.toFixed(1).replace(".",",")+"%";
+});
+
+document.getElementById("btnSaranDp").addEventListener("click", ()=>{
+  const target = parseFloat((document.getElementById("targetLtv").value||"90").replace(",","."))/100;
+  document.getElementById("targetLtvLabel").textContent = (target*100).toFixed(0)+"%";
+
+  const category = document.getElementById("purposeUnit").value;
+  const B = parseRupiah(document.getElementById("harga").value);
+  const tipeAsuransi = document.getElementById("tipeAsuransi").value;
+  const E = parseInt(document.getElementById("tenor").value,10);
+  const K = parseRupiah(document.getElementById("admin").value);
+  const effRatePct = parseFloat((document.getElementById("effRate").value||"0").replace(",","."));
+  const provisiPct = parseFloat((document.getElementById("pctProvisi").value||"0").replace(",","."));
+  const addm = currentScheme === "ADDM";
+  const R = hitungPersenAsuransi(category, tipeAsuransi, B, E);
+  const M = R*B;
+
+  // bisection search: cari F sehingga Y/B mendekati target
+  let lo=0, hi=B;
+  for(let i=0;i<45;i++){
+    const mid=(lo+hi)/2;
+    const sol=solveForDp(B, mid, K, 0, effRatePct, provisiPct, E, addm, M);
+    const ltv = B? sol.Y/B : 0;
+    if(ltv>target) lo=mid; else hi=mid; // DP naik -> Y turun -> LTV turun
+  }
+  const suggested = roundUpTo((lo+hi)/2, 100000);
+  document.getElementById("dpGross").value = suggested.toLocaleString("id-ID");
+  ltvManualOverride = null;
+  render();
+});
+
+render();
+</script>
+
+
+</body></html>
